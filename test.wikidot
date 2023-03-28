@@ -1,0 +1,77 @@
+[[=]]
+
+[[size xx-large]]**[[[antinetease|反对网易干涉，MC属于玩家！]]]**[[/size]]
+
+**[[size x-large]][[[2023-winter|两年半竞赛]]]已开始！[[/size]]**
+怎么哪里都有小黑子（恼）
+
+想要发布一篇新作品？
+[[module NewPage]]
+[[size large]][[[vote:1|]]]
+[[[vote:2|]]]
+[[/size]]
+正在进行中！
+[[collapsible show="公告/必读" hide="关闭"]]
++ 公告
+= [[[/forum/c-7076323|讨论区/公告]]]
+++ 最重要的，先看过[[[guide-book|这个]]]
+[[[joke|看笑话]]]
++ 提示
+点击[[[system:join|此处]]]加入网站。
+点击[[[system:members|查看故事站成员]]]
+[[[scp-foundation|微型SCP基金会主页（别笑哈）]]]
+[[[mcstories|套娃]]]
+[[[random|随机数生成器]]]
+任何其他疑问欢迎私信管理员[[user Ilya Ivanovsky]]或[[user 0469wyz]]
+[[/collapsible]]
+@@ @@
+[[/=]]
+
+[[div style="border: dashed 2px #999999; border-radius: 20px; margin: 0 auto; width: 400px; text-align: center; padding-bottom: 1em; background-color: #ffffff;"]]
+
+[[size 120%]]最新页面[[/size]]
+[[<]]
+[[module ListPages tags="故事 世界历史 指导推荐 原创 指导 帮助 news 管理 中心 设定 分设定 笑话 专题" limit="10" separate="no" order="created_at_desc" category="* -deleted"]]
+* **%%title_linked%%** By %%created_by%%  『目前评分为%%rating%%』
+[[/module]]
+[[/<]]
+[[>]]
+[[size 90%]]
+[[[new-pages|最新页面一览]]]@@     @@
+[[/size]]
+[[/>]]
+[[/div]]
+
+
+[[div style="border: dashed 2px #999999; border-radius: 20px; margin: 0 auto; width: 400px; text-align: center; padding-bottom: 1em; background-color: #ffffff;"]]
+[[size 120%]]精品页面[[/size]]
+__**//WARNING “精品”标签只得由管理者添加 WARNING//**__
+[!--以后的精品页面请加上“精品”标签。--]
+[[module ListPages tags="精品" limit="3" perPage="1" separate="no" order="name"]]
++ %%title_linked%%
+By %%created_by%%
+『目前评分为%%rating%%』
+[[/module]]
+[[/div]]
+
+[[div style="border: dashed 2px #999999; border-radius: 20px; margin: 0 auto; width: 400px; text-align: center; padding-bottom: 1em; background-color: #ffffff;"]]
+
+[[collapsible show="恢复中文档" hide="恢复中文档"]]
+[[size 120%]]恢复中文档公示(挽救区)[[/size]]
+[!--恢复中页面请加上“betatest”分类。--]
+[[module ListPages category="betatest" limit="7" perPage="7" separate="no" order="rating"]]
+%%title_linked%%  『目前评分为%%rating%%』 看看%%created_by%%的这篇文现在如何
+[[/module]]
+[[>]]
+[[size 90%]]
+[[[betatest-pages|恢复中页面一览]]]@@     @@
+[[/size]]
+[[/>]]
+[[/collapsible]]
+[[/div]]
+= **[[[random:story|随机故事]]]**
+= **[[[http://mcstories.wikidot.com/002|新抽奖机]]]**（加上**抽奖**标签来加入此页面。）
+= **[[[http://mcstories.wikidot.com/about-this-site|关于本站：欢迎任何人投稿]]]**
+[[[hkd|]]]
+已加入聊天室 [[[new-cbox|新]]] [[[cbox|旧]]]
+已加入滑稽 输入@@[[image http://mcstories.wikidot.com/local--files/huaji/huaji.jpg width="15px"]]@@即可发送！[[image http://mcstories.wikidot.com/local--files/huaji/huaji.jpg width="15px"]]

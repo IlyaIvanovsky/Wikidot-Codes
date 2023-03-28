@@ -1,0 +1,146 @@
+const got = require('got');
+const cheerio = require('cheerio');
+class WD {
+  // Modified from https://github.com/resure/wikidot-ajax/blob/master/index.js
+  constructor(baseURL) {
+    this.baseURL = `${baseURL}/ajax-module-connector.php`;
+  }
+  async req(url, params) {
+      const wikidotToken7 = Math.random().toString(36).substring(4);
+      return await got.post(url, {
+        headers: {Cookie: `wikidot_token7=${wikidotToken7}`},
+        form: Object.assign({wikidot_token7: wikidotToken7, callbackIndex: 0}, params)
+      }).json();
+  };
+ 
+  async module(moduleName, params) {
+    return await this.req(this.baseURL, Object.assign({moduleName: moduleName},params))
+  }
+ 
+  async getUser(username) {
+    return await this.module("users/UserSearchModule", {
+      query: username
+    })
+  }
+ 
+  async getrevs(info, id, perpage, page) {
+    info = await this.module("userinfo/UserChangesListModule", {
+      userId: `${id}`,
+      perpage: `${perpage}`,
+      page: page
+    })
+    return {body: info.body, ex: info.body.trim()!==`Sorry, no revisions matching your criteria.`}
+  }
+ 
+  async getposts(info, id, perpage, page) {
+    info = await this.module("userinfo/UserRecentPostsListModule", {
+      userId: `${id}`,
+      limit: `${perpage}`,
+      page: page
+    })
+    return cheerio.load(info.body)
+  }
+ 
+  async linsearch(username, userId) {
+    if (!(userId||username)) return null;
+    if (!!userId) {var id = userId};
+    if (!userId && !!username) {
+      // The following retrieval of user id by username is avoided whenever user id is provided, as the search process is very slow.
+      var user = username.toLowerCase()
+      var res = await this.getUser(user);
+      var names = Object.values(res.userNames).map(x=>x.trim().toLowerCase());
+      var id = Object.keys(res.userNames)[names.indexOf(user)];
+    }
+    // If the user id is already known by other means the id can be directly inputted in the following line.
+    //var id = 1404533//zyn////3427263//7happy7////4476849//sekai_s////2941964//m element
+    var ret = {revisions: null, posts: null}
+ 
+    // Retrieving number of total revisions
+    var info1
+    var num1 = 5000, count1 = 0
+    while (num1==5000) {
+      info1 = await this.getrevs(info1, id, 5000, ++count1)
+      var $1 = cheerio.load(info1.body)
+      num1 = $1("tr").length
+      //console.log(`Got revisions ${$1("span.pager-no").first().text().trim()}`)
+    }
+    ret.revisions = (count1-1)*5000+num1;
+ 
+    // Retrieving number of total forum posts
+    var info2
+    var num2 = 3000, count2 = 0
+    while (num2==3000) {
+      var $2 = await this.getposts(info2, id, 3000, ++count2)
+      num2 = $2("div.post").length
+      //console.log(`Got forum posts ${$2("span.pager-no").first().text().trim()}`)
+    }
+    ret.posts =  (count2-1)*3000+num2;
+ 
+    return ret;
+  }
+ 
+  async expsearch(username, userId) {
+    if (!(userId||username)) return null;
+    if (!!userId) {var id = userId};
+    if (!userId && !!username) {
+      // The following retrieval of user id by username is avoided whenever user id is provided, as the search process is very slow.
+      var user = username.toLowerCase()
+      var res = await this.getUser(user);
+      var names = Object.values(res.userNames).map(x=>x.trim().toLowerCase());
+      var id = Object.keys(res.userNames)[names.indexOf(user)];
+    }
+    // If the user id is already known by other means the id can be directly inputted in the following line.
+    //var id = 1404533//zyn////3427263//7happy7////4476849//sekai_s////2941964//m element
+    var ret = {revisions: null, posts: null}
+ 
+    // Retrieving number of total revisions
+ 
+    var info1={body:undefined, ex:true}, $1, page, hiin1=8, index1=8, count1=256, num1=20;
+    while (num1==20) {
+      info1 = await this.getrevs(info1, id, 20, count1);
+      $1 = cheerio.load(info1.body);
+      num1 = $1("tr").length;
+      page = $1("span.pager-no").first().text().trim()
+      if (page.split(" ").length!=4) {
+        if (index1<0) {index1=0};
+        if (info1.ex) {
+          if (index1>=hiin1) { count1*=2; hiin1++; index1++; }
+          else { count1+=2**index1; index1--; }
+        } else {
+          count1-=2**index1; index1--; num1=20;
+        }
+      } else {
+        info1 = await this.getrevs(info1, id, 20, page.split(" ").pop());
+        $1 = cheerio.load(info1.body);
+        num1 = $1("tr").length;
+      }
+    }
+    ret.revisions=(count1-1)*20+num1
+ 
+    // Retrieving number of total forum posts
+    var info2, $2, page, hiin2=7, index2=7, count2=128, num2=20;
+    while (num2==20||num2==0) {
+      $2 = await this.getposts(info2, id, 20, count2);
+      num2 = $2("div.post").length
+      page = $2("span.pager-no").first().text().trim()
+      if (index2<0) {index2=0};
+      if (num2) {
+        if (index2>=hiin2) { count2*=2; hiin2++; index2++; }
+        else { count2+=2**index2; index2--; }
+      } else {
+        count2-=2**index2; index2--;
+      }
+    }
+    ret.posts=(count2-2)*20+num2;
+ 
+    return ret;
+  }
+}
+ 
+var a = new WD("http://zok6hoi2.wikidot.com")
+ 
+// If the user id is already known by other means the id can be directly inputted in the following line.
+var id = 1404533//zyn////3427263//7happy7////4476849//sekai_s////2941964//m element
+ 
+// Use linsearch() or expsearch() to your needs. Or do Promise.race() with both of them for the best of two worlds.
+a.linsearch(null, id).then(res=>console.log(res))
